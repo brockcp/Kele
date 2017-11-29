@@ -20,12 +20,12 @@ class Kele
 
   def get_me #RETRIEVE CURRENT USER
     response = Kele.get('/users/me', headers: { "authorization" => @auth_token }) #HTTPARTY REQUEST RETURNS RESPONSE OBJECT(DATA) VIA BODY METHOD. PASSING TOKEN VIA HTTPARTYS HEADERS OPTION TO PROPERLY AUTHENTICATE AGAINST BLOC API
-    JSON.parse(response.body)  #PARSE METHOD CONVERTS DATA TO RUBY HASH
+    to_ruby_hash  #PARSE METHOD CONVERTS DATA TO RUBY HASH
   end
 
   def get_mentor_availability(mentor_id)
     response = Kele.get("/mentors/#{mentor_id}/student_availability", headers: {"authorization" => @auth_token})
-    JSON.parse(response.body)
+    to_ruby_hash
   end
 
   def get_messages(page = nil)
@@ -34,11 +34,21 @@ class Kele
     else
       response = Kele.get("/message_threads?page=#{page}", headers: { "authorization" => @auth_token })
     end
-    JSON.parse(response.body)
+    to_ruby_hash
   end
 
   def create_message(recipient_id, subject, message)
     response = Kele.post("/messages", body: { "recipient_id": recipient_id, "subject": subject, "stripped-text": message }, headers: { "authorization" => @auth_token })
+  end
+
+  def create_submission(checkpoint_id, enrollment_id, assignment_branch, assignment_commit_link, comment)
+    response = Kele.post("/checkpoint_submissions", body: { "checkpoint_id": checkpoint_id, "enrollment_id": enrollment_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "comment": comment }, headers: { "authorization" => @auth_token })
+  end
+
+  private
+  
+  def to_ruby_hash
+    JSON.parse(response.body)
   end
 
 end

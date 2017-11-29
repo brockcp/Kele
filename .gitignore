@@ -50,5 +50,5 @@ build-iPhoneSimulator/
 .rvmrc
 
 #BP
-notes.md
+notes.rb
 .DS_Store
