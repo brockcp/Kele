@@ -21,4 +21,9 @@ class Kele
     JSON.parse(response.body)  #PARSE METHOD CONVERTS DATA TO RUBY HASH
   end
 
+  def get_mentor_availability(mentor_id)
+    response = Kele.get("/mentors/#{mentor_id}/student_availability", headers: {"authorization" => @auth_token})
+    JSON.parse(response.body)
+  end
+
 end
